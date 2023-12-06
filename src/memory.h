@@ -72,6 +72,7 @@ extern char current_filename[];
 #define LOADRAM_AUTOSKIP_HEADER (1)
 
 #define SAVE_BASEDIR    ("/sd2snes/saves/")
+#define SAVE_BASEDIR_BAK ("/sd2snes/saves/bak/")
 
 #define min(a,b) \
  ({ __typeof__ (a) _a = (a); \

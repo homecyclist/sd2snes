@@ -760,10 +760,25 @@ uint32_t load_bootrle(uint32_t base_addr) {
 }
 
 void save_srm(uint8_t* filename, uint32_t sram_size, uint32_t base_addr) {
+  {
     char srmfile[256] = SAVE_BASEDIR;
     check_or_create_folder(SAVE_BASEDIR);
     append_file_basename(srmfile, (char*)filename, ".srm", sizeof(srmfile));
     save_sram((uint8_t*)srmfile, sram_size, base_addr);
+  }
+  /* Create unique Backup Files:
+  Don't calculate actual CRC of SRAM to save cycles.
+  We're going to use "saveram_crc_old" as a string 
+  source for a pseudo-random file extension.
+  */  
+  {
+    char srmfile[256] = SAVE_BASEDIR_BAK;
+    check_or_create_folder(SAVE_BASEDIR_BAK);
+    char crc_str[10];
+    snprintf(crc_str, 10,".%lX", saveram_crc_old); 
+    append_file_basename(srmfile, (char*)filename, crc_str, sizeof(srmfile));
+    save_sram((uint8_t*)srmfile, sram_size, base_addr);
+  }
 }
 
 void save_sram(uint8_t* filename, uint32_t sram_size, uint32_t base_addr) {
